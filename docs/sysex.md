@@ -21,6 +21,7 @@ If you wish to turn two or more notes on at the same time, the control byte need
 For example, to turn note 35 on as well, you could send:
 
 | 92 | 20  40 | 23  40 |
+| --- | --- | --- |
 |NOTE ON, ch. 2 | Note #32, velocity 64 | Note #35, velocity 64 |
 
 These codes can be transmitted both ways on the CZ 101, 1000, 5000, but since they do not detect note velocity, it is always transmitted and recognized as 64 (= 40 hex).
