@@ -55,106 +55,89 @@ The controls are:
 | 40 (CZ-5000) | Sustain pedal | 0 = off, 7F = ON |
 | 41   | Portamento on/off | 0 = off, 7F = ON |
 
-4) PROGRAM CHANGE
------------------
+## Program change
 
-This allows you to change between the preset sounds ( and your internal
-sounds and cartridges ). Just send C0 plus the channel number, then the
-program number. Eg to set CZ101 on channel 1 to Synth Bass:
+This allows you to change between patches. Just send C0 plus the channel number, then the program number. For example, to set CZ-101 on channel 1 to Synth Bass:
 
-        C1              07
-PROGRAM ch 1            Program 7
+| C1 | 07 |
+| --- | --- |
+| PROGRAM ch. 1 | Program 7 |
 
-Note that the preset tones are given numbers :
+The mapping between program numbers and the patch buttons on the synthesizer are as follows:
 
-CZ101/1000
+### CZ-101, CZ-1000
 
-0..0F   Preset sounds 1..16
-20..2F  Internal sounds 1..16
-40..4F  Cartridge sounds 1..16
+The CZ-101 and CZ-1000 have 16 presets, 16 user-writable patches, plus a further 16 on cartridge (if a cartridge is inserted).
 
-CZ5000
+| Prog # | Patch button |
+| ------ | ------------ |
+| 00..0F | Preset sounds 1..16 |
+| 20..2F |  Internal sounds 1..16 |
+| 40..4F |  Cartridge sounds 1..16 |
 
-00..1F  Preset sounds A1,A2,A3....D6,D7,D8
-20..3F  Internal sounds A1,A2.....D6,D7,D8
+### CZ-5000
 
+The CZ-5000 has four banks (A..D) of eight presets (1..8), and four banks (A..D) of eight user-writable patches. Although the CZ-5000 has a cartridge slot, this can only be used for loading and saving sounds, it cannot be accessed directly.
 
-5) PITCH BEND CHANGE
---------------------
-
-This is acheived by sending E0 plus the channel number, then two bytes
-denoting the new value of pitch bend. The first byte is the most
-significant, and the second the least significant. Note also that the
-lower 6 bits of the lower byte are not used, and that the central
-position of the wheel corres- ponds to the byte sequence 40 00.
-
-        HIGHEST         7F 40
-
-        HIGHER
-
-        CENTER          40 00
-
-        LOWER
-
-        LOWEST          00 00
+| Prog # | Patch button |
+| ------ | ------------ |
+| 00..1F |  Preset sounds A1,A2,A3....D6,D7,D8 |
+| 20..3F |  Internal sounds A1,A2.....D6,D7,D8 |
 
 
-So, to bend the instrument on channel two UP by about half its maximum
-amount, send
+## Pitch Bend Change
 
-        E2              60      00
-BEND channel two        ---1/2 up--
+This is acheived by sending E0 plus the channel number, then two bytes denoting the new value of pitch bend. The first byte is the most significant, and the second the least significant. Note also that the lower 6 bits of the lower byte are not used, and that the central position of the wheel corresponds to the byte sequence 40 00.
 
+| Bend | Two-byte code |
+| ---- | ------------- |
+| HIGHEST | 7F 40 |
+| HIGHER  |       |
+| CENTRE  | 40 00 |
+| LOWER   |       | 
+| LOWEST  | 00 00 |
 
-6) AFTER TOUCH
---------------
-Is not supported on the CZ101/1000/5000. Sorry!
+So, to bend the instrument on channel two UP by about half its maximum amount, send
 
+| E2 | 60 00 |
+| --- | --- |
+| BEND channel two  | 1/2 up |
 
-7) MODE CHANGE
---------------
-This is very similar to the CONTROL CHANGE message, and can be regarded
-as a special case.
+## Aftertouch
 
-OMNI ON         send E0 + channel, 7D, 00
-OMNI OFF        send B0 + channel, 7C, 00
-POLY ON         send B0 + channel, 7F, 00
-POLY OFF        send B0 + channel, 7E, 00
+Not supported on the CZ101/1000/5000.
 
-OMNI mode plays any MIDI data received at the MIDI IN plug on the back
-of the machine, regardless of channel. POLY mode is equivalent to the
-SOLO button on the front panel. With the CZ101, for instance, POLY OFF
-( =SOLO ) allows the synth to be used as four monophonic synthesizers
-under remote control.
+## Mode Change
 
-LOCAL ON        send B0 + channel, 7A, 7F
-LOCAL OFF       send B0 + channel, 7A, 00
+This is very similar to the CONTROL CHANGE message, and can be regarded as a special case.
 
-Local mode means that the keyboard is "connected" to the sound
-producing part of the CZ within the machine itself. With LOCAL ON (the
-default setting), playing the keyboard both sends note messages out of
-the MIDI port, and also makes sounds at the same time. If you want to
-do wierd things like keyboard splitting, LOCAL OFF will allow you to
-see what the keyboard is doing without the CZ making any sound at all.
-You could then act on that information and send the keyboard a command
-depending on the keys that has nothing to do with them, eg program
-change or pitch bend. The possibilities are endless !
+| Mode | Send |
+| ---- | ---- |
+| OMNI ON | E0 + channel, 7D, 00 |
+| OMNI OFF | B0 + channel, 7C, 00 |
+| POLY ON | B0 + channel, 7F, 00 |
+| POLY OFF | B0 + channel, 7E, 00 |
 
+OMNI mode plays any MIDI data received at the MIDI IN plug on the back of the machine, regardless of channel. POLY mode is equivalent to the SOLO button on the front panel. With the CZ101, for instance, POLY OFF
+( =SOLO ) allows the synth to be used as four monophonic synthesizers under remote control.
 
-SEQUENCER MESSAGES
-------------------
+| Mode | Send |
+| ---- | ---- |
+| LOCAL ON | B0 + channel, 7A, 7F |
+| LOCAL OFF | B0 + channel, 7A, 00 |
 
-The CZ5000 has its own internal sequencer, which can be controlled
-by:
+Local mode means that the keyboard is "connected" to the sound producing part of the CZ within the machine itself. With LOCAL ON (the default setting), playing the keyboard both sends note messages out of the MIDI port, and also makes sounds at the same time. If you want to do wierd things like keyboard splitting, LOCAL OFF will allow you to see what the keyboard is doing without the CZ making any sound at all. You could then act on that information and send the keyboard a command depending on the keys that has nothing to do with them, e.g. program change or pitch bend. The possibilities are endless!
 
-F8      Clock byte: transmitted 24 times per quarter note ( crotchet
-)
-FA      Start: same as pressing the PLAY button on the front panel
-FB      Continue: continue song where last stopped
-FC      Stop: stops song play at current position
-FD      Active sense: basically, a cry of "Is there anybody out
-        there". If no reply is received within about 1/3 second, it shuts
-        the voice off.
+## Sequencer messages (CZ-5000 only)
+
+The CZ5000 has its own internal sequencer, which can be controlled by:
+
+| Send | Description |
+| F8   | Clock byte: transmitted 24 times per quarter note (crotchet) |
+| FA   | Start: same as pressing the PLAY button on the front panel |
+| FB   | Continue: continue song where last stopped |
+| FC   | Stop: stops song play at current position |
+| FD   | Active sense: basically, a cry of "Is there anybody out there". If no reply is received within about 1/3 second, it shuts the voice off. |
 
 
 SYSTEM EXCLUSIVE MESSAGES
