@@ -13,6 +13,10 @@ There are basically two types of bytes sent over MIDI - control bytes and data b
 
 A note on message consists of sending a "NOTE ON" control byte, the note number you want to turn on, and the velocity at which you want to play the note. The note on control is 90 plus the channel number. So, for example, if you want to play note 32 ( = hex 20) at speed 64 (= hex 40), on the midi instrument receiving on channel two, then you would send:
 
+| 92 | 20 | 40 |
+| NOTE ON, channel 2 | Note #32 | Velocity 64 |
+
+
 
 | Byte | Description |
 | ---- | ----------- |
@@ -21,9 +25,7 @@ A note on message consists of sending a "NOTE ON" control byte, the note number 
 | 40   | Velocity 64 |
 
 
-If you wish to turn two or more notes on at the same time, the control
-byte need not be retransmitted. Eg to turn note 35 on as well, you
-could send
+If you wish to turn two or more notes on at the same time, the control byte need not be retransmitted. Eg to turn note 35 on as well, you could send
 
         92      20      40      23      40
 NOTE ON, ch2    ---32 on--      ---35 on--
