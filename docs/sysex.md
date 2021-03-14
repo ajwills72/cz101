@@ -15,7 +15,7 @@ A note on message consists of sending a "NOTE ON" control byte, the note number 
 
 
 | Byte | Description |
-| ---- + ----------- |
+| ---- | ----------- |
 | 92   | NOTE ON, channel 2 |
 | 20   | Note #32 |
 | 40   | Velocity 64 |
