@@ -1,4 +1,4 @@
-# Casio CZ-101 MIDI specification
+# Casio CZ-101, CZ-1000, and CZ-5000 MIDI specification
 
 **This information from [youngmonkey](http://www.youngmonkey.ca/nose/audio_tech/synth/Casio-CZ.html).**
 
@@ -17,23 +17,13 @@ A note on message consists of sending a "NOTE ON" control byte, the note number 
 | --- | --- | --- |
 | NOTE ON, channel 2 | Note #32 | Velocity 64 |
 
+If you wish to turn two or more notes on at the same time, the control byte need not be retransmitted.
+For example, to turn note 35 on as well, you could send:
 
+| 92 | 20  40 | 23  40 |
+|NOTE ON, ch. 2 | Note #32, velocity 64 | Note #35, velocity 64 |
 
-| Byte | Description |
-| ---- | ----------- |
-| 92   | NOTE ON, channel 2 |
-| 20   | Note #32 |
-| 40   | Velocity 64 |
-
-
-If you wish to turn two or more notes on at the same time, the control byte need not be retransmitted. Eg to turn note 35 on as well, you could send
-
-        92      20      40      23      40
-NOTE ON, ch2    ---32 on--      ---35 on--
-
-These codes can be transmitted both ways on all the CZ 101,1000,5000,
-but since they do not detect note velocity, it is always transmitted
-and recognized as 64 (= 40 hex).
+These codes can be transmitted both ways on the CZ 101, 1000, 5000, but since they do not detect note velocity, it is always transmitted and recognized as 64 (= 40 hex).
 
 2) NOTE OFF
 -----------
