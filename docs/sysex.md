@@ -26,43 +26,34 @@ For example, to turn note 35 on as well, you could send:
 
 These codes can be transmitted both ways on the CZ 101, 1000, 5000, but since they do not detect note velocity, it is always transmitted and recognized as 64 (= 40 hex).
 
-2) NOTE OFF
------------
+## Note Off
 
-Just send a note on message with velocity 0. Eg to turn note 35 off,
-send
+Just send a note on message with velocity 0. For exmaple,  to turn note 35 off, send:
 
-        92      23      00
-NOTE ON,Ch 2    --35 off--
+| 92 | 23 | 00 |
+| --- | --- | --- |
+| NOTE ON, ch. 2 | Note #35 | off |
 
 
-3) CONTROL CHANGE 
------------------
+## Control Change
 
-There are several controls that can be set from MIDI. Just send a
-"CONTROL CH" byte , which is B0 plus the channel number, the number of
-the control that you wish to change, then the value you wish to set it
-to. Eg for CZ101 portamento time, send
+There are several controls that can be set from MIDI. Just send a "CONTROL CH" byte , which is B0 plus the channel number, the number of the control that you wish to change, then the value you wish to set it
+to. For example, for CZ101 portamento time, send
 
-        B0      05      10
-CONTROL, ch 0   --ctrl 5=16--
+| B0 | 05 | 10 |
+| --- | --- | --- |
+| CONTROL, ch. 0 | Portamento time | 16 |
 
 The controls are:
 
-CZ101/1000
-
-01      Vibrato on/off          Send 0 for off, 7F for ON
-05      Portamento time         Send number 00..63 (0..99)
-06      Master tune             Send number 00..7F
-41      Portamento on/off       Send 0 for OFF, 7F for ON
-
-CZ5000
-
-01      Modulation wheel        Send number 00..7F
-05      Portamento time         Send number 00..63
-06      Master tune             Send number 00..7F
-40      Sustain pedal           Send 0 for OFF, 7F for ON
-41      Portamento on/off       Send 0 for OFF, 7F for ON
+| Code | Function | Data |
+| ---- | -------- | ---- |
+| 01 (CZ-101/1000)  | Vibrato on/off | 0 = off, 7F = ON | 
+| 01 (CZ-5000) | Modulation wheel | 00..7F |
+| 05   | Portamento time | 00..63 (0..99) | 
+| 06   | Master tune | 00..7F |
+| 40 (CZ-5000) | Sustain pedal | 0 = off, 7F = ON |
+| 41   | Portamento on/off | 0 = off, 7F = ON |
 
 4) PROGRAM CHANGE
 -----------------
